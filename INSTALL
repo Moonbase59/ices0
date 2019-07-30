@@ -1,0 +1,49 @@
+BUILDING FROM SOURCE
+~~~~~~~~~~~~~~~~~~~~
+You must install libshout 2.0 before building ices. Get it from the same place
+you found ices, or from www.icecast.org.
+
+Do ./configure, optionally with --with-perl, --with-python and --with-lame, 
+if you want support for them (but configure will try to detect them
+automatically).
+
+If for some reason the configure script doesn't find the include files for
+python, perl or lame, you have to specify the path to these with
+--with-something-includes and --with-something-libraries.
+
+./configure --help will help you out with the exact syntax for those options.
+
+I installed lame as a debian package so lame.h is in /usr/include/lame/lame.h
+and libmp3lame.a is in /usr/lib. configure finds everything automatically.
+
+Then, do 'make' and everything should be fine.
+
+Optionally do a 'make install' which installs all the ices stuff.
+
+BUILDING FROM CVS
+~~~~~~~~~~~~~~~~~
+If you're installing ices from cvs, you need to do something
+like this:
+
+cvs co ices
+
+./autogen.sh
+make
+
+And you'll hopefully have a ices binary in src/
+
+For config files, ices depends on libxml2.
+Make sure you've got xml-config in your path.
+
+For playlist handlers, ices can optionally use
+python or perl.
+Add --with-python or --with-perl, to the configure script if you
+want this enabled.
+
+For reencoding, you'll need libmp3lame, and the --with-lame* options
+in configure. That works fine for me most of the time, but I wouldn't
+exactly call it stable.
+
+Check the ./configure --help options for this.
+
+Good luck.

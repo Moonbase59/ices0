@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# The first line should be a path to an audio file
+echo "/mp3s/arcadefire2.mp3"
+
+# The next line is optional
+echo "The Arcade Fire - Neighbourhood #2 (Laika)"

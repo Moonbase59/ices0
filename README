@@ -1,0 +1,329 @@
+
+                                  Ices Manual
+   __________
+   
+    A. Introduction
+    B. What's it for?
+    C. What can it do?
+         1. Cue file 
+         2. Signal Handling 
+         3. Playlist Handling 
+         4. Reencoding 
+	 5. Vorbis, FLAC and MP4 transcoding
+	 6. Crossfading
+    D. Configuring 
+         1. Command line options 
+         2. Configuration file (ices.conf) 
+    E. Licensing 
+    F. Developers resources 
+                                  _______
+   
+    A. Introduction
+       For a very long time, the only good streaming tool for command
+       line systems was shout. Shout had a lot of issues, it was a quick
+       and dirty hack, it was buggy, it was sending data too fast or too
+       slow, and it was just something no one wanted to fix. So we
+       rewrote it from scratch, and the next generation streamer, 'ices',
+       is here. 'ices' is short for 'icesource', a source for the icecast
+       server. 'ices' should be pronounced 'isis' like the egyptian
+       godess of fertility. For more information about icecast, I suggest
+       you check out the icecast webpage at http://www.icecast.org/.
+    B. What's it for?
+       ices, armed with a list of mp3 files, sends a continuous stream of
+       mp3 data to an icecast server. The server is then responsible for
+       accepting client connections and feeding the mp3 stream to them.
+       But the stream originates in the streamer, 'ices'. The terms
+       'encoder', 'streamer' and 'source' are used equivalently
+       throughout this document, and throughout all the documentation in
+       the streaming system.
+    C. What can it do?
+         1. Cue file
+            The cue file holds information on the file that ices is
+            currently feeding to the server. This is neat for you people
+            out there who like running scripts. I myself, use the cue
+            file in a tcl script, running from a eggdrop bot, on irc.
+            That way I can ask the bot what song is currently playing,
+            how long it is, how much of it has been played, and get
+            information about the next songs on the playlist.
+            The file currently has the following lines, (in this order).
+               o filename
+               o size (in bytes)
+               o bitrate (in kbits/s)
+               o minutes:seconds (total song length)
+               o percent played (i.e 25, no %-sign)
+               o playlist line index (i.e 3, if we're playing the 4:th
+                 line in the internal playlist. Logical, huh? ) Also, for
+                 you scripting people, when ices starts, it writes its
+                 process id to the file ices.pid.
+               o ID3 Artist
+               o ID3 Title
+         2. Signal handling
+               o Sending SIGINT to ices will make it exit.
+               o Sending SIGHUP to ices will make it close and reopen the
+                 logfile.
+         3. Reencoding
+            If compiled with support for reencoding using libmp3lame, and
+            you supply the -R command line option or set the
+            Execution/Reencode to 1 in the XML config file, then ices
+            will start reencoding your files on the fly to the bitrate
+            you specified with the -b option or the Stream/Bitrate tag.
+            The sample rate, number of channels, etc, will be chosen on
+            the fly by lame itself, unless you specify something using
+            the -H and -N options.
+            If you want to change it, I suggest you add support for this
+            to ices and mail me a patch.
+            I think you should be fine with whatever lame chooses though.
+            Also, please make sure that your files are ok before you
+            start reencoding them with ices. This is because the mpglib
+            part of lame (what does the decoding) is rather unstable and
+            will call exit(0) when errors are encountered.
+            This will make ices exit, which is kinda bad :)
+	    You'll need at least lame 3.88beta, and current CVS is a bit
+	    better.
+         4. Playlist handling
+            About 96% of all emails I got about shout was people asking
+            me to add small changes to shout playlist handling to suit
+            their specific needs. This is course is not how I want to
+            spend my life :) Shout had a feature to call an external
+            program with a system() call, before each song, and that
+            could possibly modify the playlist. This was rather ugly, but
+            did the trick. In ices, we take this a step further an
+            include scripting support inside the program. You can write
+            your own playlist handler in shell, perl or python, whatever you
+            prefer. Your script module may define 5 functions: test,
+            init, shutdown, get_next, and get_current_lineno. I suggest
+            you take a look in the distributed module files and just
+            expand on that. Shell scripts should return two lines - the
+            first is a path to a file, and the second is an optional
+            metadata string.
+	 5. Vorbis, FLAC and MP4 transcoding
+            If compiled with the appropriate libraries, ices can transcode
+            Ogg Vorbis, FLAC and MP4 (AAC) audio files to MP3 on the fly. Keep
+	    your sources in whatever format you like best.
+	 6. Crossfading
+	    If compiled with reencoding support, ices can also crossfade
+            between tracks, giving you that pro radio station sound.
+    D. Configuring
+       ices can do everything shout could do, and more. It can be
+       configured through hard coded defaults, a configfile, and command
+       line options. The configfile is in XML, but don't get scared and
+       run off. Just edit the distributed configfile and change the
+       values you need. The command line options should be familiar to
+       old shout users, although some options have been renamed.
+         1. Command line options
+            Options:
+               o -B (Background (daemon mode))
+               o -b <stream bitrate>
+               o -C <crossfade seconds>
+               o -c <configfile>
+               o -D <base directory>
+               o -d <stream description>
+               o -f <dumpfile on server>
+               o -F <playlist>
+               o -g <stream genre>
+               o -h <host>
+               o -i (use icy headers)
+               o -M <interpreter module>
+               o -m <mountpoint>
+               o -n <stream name>
+               o -p <port>
+               o -P <password>
+               o -r (randomize playlist)
+               o -s (private stream)
+               o -S <script|perl|python|builtin>
+               o -u <stream url>
+               o -N <Reencoded number of channels>
+               o -H <Reencoded sample rate>
+         2. Configuration file (icec.conf)
+            Here's a sample configuration file. It's the same as the
+            ices.conf.dist that is included in the ices distribution.
+
+                        <?xml version="1.0"?>
+                        <ices:Configuration xmlns:ices="http://www.icecast.org/
+projects/ices">
+                        <Playlist>
+                                <File>apan.txt</File>
+                                <Randomize>1</Randomize>
+                                <Type>builtin</Type>
+                                <Module>ices</Module>
+				<Crossfade>0</Crossfade>
+                        </Playlist>
+                        <Server>
+                                <Hostname>localhost</Hostname>
+                                <Port>8000</Port>
+                                <Password>letmein</Password>
+                                <Protocol>http</Protocol>
+                        </Server>
+                        <Execution>
+                                <Background>0</Background>
+                                <Verbose>1</Verbose>
+                                <BaseDirectory>/tmp</BaseDirectory>
+                                <Reencode>0</Reencode>
+                                <Samplerate>-1</Samplerate>
+                                <Channels>-1</Channels>
+                        </Execution>
+                        <Stream>
+                                <Name>Cool ices default name from XML</ice
+s:Name>
+                                <Genre>Cool ices genre from XML</Genr
+e>
+                                <Description>Cool ices description from XM
+L</Description>
+                                <URL>Cool ices URL from XML</URL>
+                                <Bitrate>128</Bitrate>
+                                <Public>1</Public>
+                        </Stream>
+                        </ices:Configuration>
+                         3. Configurations options
+            This describes all the different options in ices.
+               o Server Hostname
+                 Command line option: -h <host>
+                 Config file tag: Server/Hostname
+                 This is the name, or ip, of the host ices should connect
+                 to. It has to run a streaming server, capable of the
+                 xaudiocast or icy protocol.
+                 This value defaults to localhost.
+               o Server Port
+                 Command line option: -p <port>
+                 Config file tag: Server/Port
+                 This is the port the server is listening on, by default
+                 8000.
+               o Server Password
+                 Command line option: -P <password>
+                 Config file tag: Server/Password
+                 The encoder password for the server. If this is not
+                 correct, then ices cannot log in on the server, and ices
+                 will exit.
+               o Server Protocol
+                 Command line option: -i for icy-headers
+                 Config file tag: Server/Protocol
+                 Either xaudiocast or icy. Use xaudiocast if you can, and
+                 icy if you must.
+               o Execution Background
+                 Command line option: -B
+                 Config file tag: Execution/Background
+                 This will launch ices in the background, as a daemon.
+               o Execution Verbose
+                 Command line option: -v
+                 Config file tag: Execution/Verbose
+                 Normally ices outputs what stream is playing and a small
+                 amount of extra information. With verbose turned on, you
+                 get a whole lot of debugging information and lots of
+                 track info.
+               o Execution Base Directory
+                 Command line option: -D <directory>
+                 Config file tag: Execution/BaseDirectory
+                 ices uses this directory for cue files, log files and
+                 temporary playlist files. You need write permissions in
+                 this directory. The default is /tmp
+               o Execution Reencode
+                 Command line option: -R (turns reencoding on)
+                 Config file tag: Execution/Reencode
+                 When you turn this option on, ices (if compiled with
+                 libmp3lame support) will reencode your mp3 files on the
+                 fly to whatever bitrate you specify with the Stream
+                 Bitrate option.
+                 PLEASE note that if your files are corrupt, this might
+                 crash ices because the library used to decode (mpglib)
+                 is not very stable. I suggest you check your files with
+                 mp3check or some other mp3 verification program before
+                 you add them to your playlist. Just popping them into
+                 your favourite player and checking the sound is
+                 definately not enough.
+                 For legal reasons, this option is not available on the
+                 binary distributions.
+               o Execution Samplerate
+                 Command line option: -H <samplerate>
+                 Config file tag: Execution/Samplerate
+                 Use this to force liblame reencoding to output mp3 data
+                 with this samplerate.
+               o Execution Channels
+                 Command line option: -N <number of channels>
+                 Config file tag: Execution/Channels
+                 Use this to force liblame reencoding to output mp3 data
+                 with this many channels.
+               o Stream Mountpoint
+                 Command line option: -m <mount point>
+		 Config file tag: Stream/Mountpoint
+                 This is the name of the mountpoint for this stream on the
+                 icecast server. Clients can access this stream at
+		 http://host:port/<mount point>.
+                 NOTE: This option does nothing if you are running in shoutcast
+                 compatibility mode.
+               o Stream Name
+                 Command line option: -n <stream name>
+                 Config file tag: Stream/Name
+                 This is the name of the stream, not to be confused with
+                 the name of the song playing.
+               o Stream Genre
+                 Command line option: -g <stream genre>
+                 Config file tag: Stream/Genre
+                 This is the genre of your stream, e.g Jazz or Static.
+               o Stream Description
+                 Command line option: -d <stream description>
+                 Config file tag: Stream/Description
+                 This option is a description of your stream.
+               o Stream URL
+                 Command line option: -u <URL>
+                 Config file tag: Stream/URL
+                 This should be a URL describing your stream.
+               o Stream Bitrate
+                 Command line option: -b <bitrate>
+                 Config file tag: Stream/Bitrate
+                 If you turn on reencoding then this will be the bitrate
+                 of the stream, otherwize the actual bitrate of the
+                 stream is the bitrate your files are encoded at, and
+                 this value is for displaying purposes only.
+                 Read the last 3 lines again, please.
+               o Stream Public
+                 Command line option: -s (makes stream private)
+                 Config file tag: Stream/Public
+                 This regulates whether the icecast server will display
+                 your stream on a directory server. Default is 1 (yes).
+               o Playlist File
+                 Command line option: -F <file>
+                 Config file tag: Playlist/File
+                 This is the file where ices originally looks for files
+                 to play.
+                 When using playlist modules in perl or python, this
+                 argument is passed to the playlist handler.
+               o Playlist Randomize
+                 Command line option: -r (randomizes file)
+                 Config file tag: Playlist/Randomize
+                 This option is passed to the playlist handler, and tells
+                 it to randomize the playlist.
+               o Playlist Type
+                 Command line option: -S <script|perl|python|builtin>
+                 Config file tag: Playlist/Type
+                 By default, ices using a builtin playlist handler. It
+                 handles randomization and not much more. Most people
+                 want sophisticated playlist handlers that interface
+                 databases and keeps track of god knows what. ices
+                 handles embedded python, embedded perl, and external
+		 shell scripts, so now you can write your own modules, 
+		 without modifying ices, that do just about anything. Use 
+		 this option to change the playlist handler type from 
+		 builtin (default), to python, perl or script.
+               o Playlist Module
+                 Command line option: -M <module>
+                 Config file tag: Playlist/Module
+                 Use this option to execute a different python or perl
+                 module or shell script than the default.
+                 Default for python is ices.py and default for perl is
+                 ices.pm, although do NOT specify the file extension for
+                 the module. Use 'whatever' instead of 'whatever.pm' or
+                 'whatever.py'
+	       o Playlist Crossfade
+                 Command line option: -C <crossfade secs>
+                 Config file tag: Playlist/Crossfade
+                 If this is greater than zero, and you have reencoding support,
+                 ices will crossfade the specified number of seconds between tracks.
+    E. Licensing
+       ices is licensed under the Gnu General Public License, and for
+       more info about that I suggest you read the file named COPYING.
+    F. Developers resources
+       If you want to write your own streaming software, or perhaps a
+       nice streaming mp3 client, go to developer.icecast.org.
+                                  _______
+   
+    This document was originally written by Alexander Haväng [eel@icecast.org].

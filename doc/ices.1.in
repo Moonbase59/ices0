@@ -1,0 +1,308 @@
+.TH "ices" "1" "July 2004" "ices @VERSION@" "Icecast media streaming system"
+.SH NAME
+ices \- stream MP3 audio to an icecast server
+
+.SH SYNOPSIS
+.B ices
+.RB [\| \-BVv \|]
+.\" Configuration path
+.RB [\| \-c
+.IR configfile \|]
+.\" Playlist options
+.RB [\| \-D
+.IR basedir \|]
+.RB [\| \-S\ builtin
+.RB [\| \-F
+.IR playlist \|]
+.RB [\| \-r \|]\|]\||[\| \-S
+.BR script \|| python \|| perl
+.RB [\| \-M
+.IR module \|]\|]
+.RB [\| \-C
+.IR crossfadesecs \|]
+.\" Server options
+.RB [\|[\| \-m
+.IR mount \|]
+.RB [\| \-h
+.IR host \|]
+.RB [\| \-p
+.IR port \|]
+.RB [\| \-P
+.IR password \|]
+.RB [\| \-t
+.IR protocol \|]
+.\" Stream options
+.RB [\| \-n
+.IR name \|]
+.RB [\| \-g
+.IR genre \|]
+.RB [\| \-d
+.IR description \|]
+.RB [\| \-u
+.IR url \|]
+.RB [\| -s \|]
+.RB [\| \-b
+.IR bitrate \|]
+.RB [\| \-f
+.IR dumpfile \|]
+.RB [\|[\| -R \|]
+.RB [\| \-H
+.IR samplerate \|]
+.RB [\| \-N
+.IR channels \|]\|]\|]\ .\|.\|.
+
+.nh
+.SH DESCRIPTION
+ices is a small but powerful and flexible encoder for icecast
+servers. Its features include:
+.IP \(bu
+A scripting interface to its playlist engine, using shell, python or
+perl as you prefer, in addition to a builtin static file server.
+Fetch your tracks from a database or update a webpage at each track
+change in a simple and robust way.
+.IP \(bu
+ices can read source audio from a FIFO. Between this and the script
+interface, it should be fairly easy to handle as complicated a
+media-delivery system as you can think up.
+.IP \(bu
+On-the-fly reencoding of your source audio to a different bitrate,
+number of channels and/or sample rate. ices can also decode Ogg Vorbis
+files and reencode them on the fly as MP3, for the benefit of older
+listening software. This just in: it can transcode FLAC and MP4 (AAC)
+files now too. Keep your sources in whatever format you prefer.
+.IP \(bu
+Crossfading between tracks. This is a new feature, and requires
+reencoding support.
+.IP \(bu
+Multiple streams from the same playlist. In conjunction with
+reencoding this gives you a very easy way to provide the same music
+for broadband and narrowband listeners at the same time.
+.IP \(bu
+A constantly-updated cue file containing up to the second information
+about which track is currently playing, how much has been played, and
+other details.
+
+.SH OPTIONS
+.SS "Execution options"
+.TP
+.B \-B
+Detach from the console and run in the background.
+.TP
+.BI \-c \ configfile
+Load configuration options from
+.IR configfile ,
+instead of the default. Command line options will override these.
+.TP
+.BI \-D \ basedir
+Write the log and cue file to
+.IR basedir .
+.TP
+.B \-V
+Show version information and compile-time options and exit.
+.TP
+.B \-v
+Run in verbose mode.
+
+.SS "Playlist options"
+.TP
+.BI \-S \ interpreter
+Chooses which playlist interpreter ices will use to find source audio
+files for streaming. May be one of
+.BR builtin , \ script , \ python ,\ or \ perl .
+The default is
+.BR builtin .
+.TP
+.BI \-F \ playlist
+If using the
+.B builtin
+playlist interpreter, this option specifies the location of the
+.I playlist
+file ices will read to find audio files. This file simply contains
+the paths to audio files, one per line.
+If not using the
+.B builtin
+interpreter, this options does nothing.
+.TP
+.B \-r
+Select songs from the playlist file in random order. If not using the
+.B builtin
+interpreter, this option does nothing.
+.TP
+.BI \-M \ module
+If using the
+.BR script , \ perl \ or \ python
+playlist modules, load the module named
+.I module
+instead of the default, 
+.BR ices .
+Otherwise this option does nothing.
+.TP
+.BI \-C \ crossfadesecs
+Crossfade between tracks. The length of the fade is
+.I crossfade
+seconds. This option requires reencoding support.
+
+.SS "Stream options"
+.TP
+.BI \-m \ mount
+Create a stream on the icecast server accessible at the mountpoint
+.IR mount .
+Clients may access your stream at
+.RI http:// host : port / mount .
+This option may be specified more than once to create multiple streams
+out of the same playlist. All stream options following each mount
+option apply to that mount only.
+
+If this option is not specified, an implicit mount named
+.B ices
+is implied.
+.TP
+.BI \-h \ host
+Connect to the icecast server on
+.IR host ,
+instead of the default,
+.BR localhost .
+.TP
+.BI \-p \ port
+Connect to the icecast server on
+.IR port ,
+instead of the default,
+.BR 8000 .
+.TP
+.BI \-P \ password
+Log into the icecast server using the password
+.IR password .
+.TP
+.BI \-t \ protocol
+Connect to the server using the streaming protocol
+.IR protocol .
+Protocol should be one of
+.BR http , \ xaudiocast ,\ or \ icy ,
+depending on whether your server is icecast 2, icecast 1,
+or shoutcast compatible, respectively. The default is
+.BR http .
+(Shoutcast would be most compatible but, unfortunately, that
+protocol does not support multiple mount points).
+.TP
+.BI \-n \ name
+Set the name of this stream to
+.IR name .
+.TP
+.BI \-g \ genre
+Set the genre of this stream to
+.IR genre .
+.TP
+.BI \-d \ description
+Set the description of this stream to
+.IR description .
+.TP
+.BI \-u \ url
+Set the URL of this stream to
+.IR url .
+.TP
+.B \-s
+Do not mark this stream as public. This instructs the icecast server
+not to update directory servers with information about this stream.
+.TP
+.BI \-b \ bitrate
+Set the bitrate of this stream to
+.IR bitrate .
+Unless reencoding is also enabled on this stream, this option is only
+informational.
+.TP
+.BI \-f \ dumpfile
+Write the contents of the stream to a file named
+.I dumpfile
+on the server. Use this option with care.
+.TP
+.B \-R
+Reencode this stream at the bitrate specified with the
+.B \-b
+option.
+.TP
+.BI \-H \ samplerate
+If reencoding, set the output sample rate to
+.IR samplerate .
+.TP
+.BI \-N \ channels
+If reencoding, set the number of output channels to
+.IR channels .
+May be
+.B 1
+for mono output or
+.B 2
+for stereo output. At low bitrates setting this to
+.B 1
+is a good way to improve sound quality.
+
+.SH "PLAYLIST SCRIPTING"
+In addition to its simple builtin playlist handler, ices can
+optionally call out to a shell script or a python or perl module for track
+information. 
+
+Shell scripts should return the path to the next audio file as the first
+line of their output. They may optionally return the metadata for title
+streaming as their second line.
+
+Your python or perl module may define the following functions:
+
+.TP
+.B ices_init
+This function is called once when ices starts up, giving your module a
+chance to initialize itself (make database connections etc.). If this
+function returns a negative result, ices will terminate.
+.TP
+.B ices_shutdown
+This function is called before ices quits, to give your module a
+chance to free any resources it may have allocated.
+.TP
+.B ices_get_next
+This function is called at each track change. Your module should
+return a string containing the path to the next audio file to be
+played.
+.TP
+.B ices_get_metadata
+This function is called after
+.BR ices_get_next .
+If it returns a string, ices will use it as the title to be streamed
+instead of trying to build one from the ID3 or vorbis comment tags, or
+the filename if neither of those are available.
+.TP
+.B ices_get_lineno
+This function is also called after ices_get_next. Your module may
+return a number which will be inserted in the cue file as the current
+line number in the playlist. It serves no other purpose.
+
+Your module must at least define the 
+.B ices_get_next
+function. All others are optional.
+
+.SH "SIGNAL HANDLING"
+Ices handles the following signals specially:
+.TP
+.B SIGINT
+Causes ices to perform a clean shutdown.
+.TP
+.B SIGHUP
+Causes ices to close and reopen the log file and the playlist. It will also
+reload and restart the playlist script if you're using one.
+.TP
+.B SIGUSR1
+Causes ices to skip to the next track in the playlist immediately.
+
+.SH FILES
+.TP
+.I @sysconfdir@/ices.conf
+Default XML configuration file. May be overriden with
+.BR -c .
+.TP
+.I @moddir@/ices.py
+Default path to the python playlist module.
+.TP
+.I @moddir@/ices.pm
+Default path to the perl playlist module.
+
+.SH AUTHORS
+ices was originally written by Alexander Haväng <eel@icecast.org>.
+.P
+It is currently developed by Brendan Cully <brendan@icecast.org>.

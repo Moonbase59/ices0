@@ -1,0 +1,5 @@
+* MP4: metadata, piped input, mono
+* Improved error handling
+* Make the scripting engines, and vorbis and MP3 reencoding, run-time linkable
+
+$Id: TODO 7421 2004-07-30 18:59:21Z brendan $

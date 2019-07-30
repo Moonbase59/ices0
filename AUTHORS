@@ -1,0 +1,16 @@
+ices was designed and written by 
+
+Alexander Havang	<eel@icecast.org>
+
+The perl interface was written by
+
+Chad Armstrong		<chad@icecast.org>
+
+Reencoding using libmp3lame was added with
+much help from Mark Taylor <mt@sulaco.org>.
+
+
+The file rand.c used for randomizing files
+is Copyright (C) 1998 Erik Greenwald <br0ke@math.smsu.edu>
+
+ices is currently maintained by Brendan Cully <brendan@icecast.org>

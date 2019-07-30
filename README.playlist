@@ -1,0 +1,49 @@
+Ices Playlist Management
+------------------------
+
+Often the built-in playlist capabilities of ices are not enough. Luckily,
+ices can also be controlled by a perl or python script. Some ideas for
+scripts: to produce fancier metadata, call out to a database, insert
+station IDs every half an hour...
+
+The impatient should be able to figure out what they need to do by
+reading the ices.pm.dist or ices.py.dist (for perl or python,
+respectively) included in the ices distribution. Others should keep
+reading.
+
+Shell scripts are somewhat simpler: At each invocation, the shell script
+must return the path to an audio file as its first line of output.
+Optionally it may return the metadata on the second line.
+
+The following methods may be defined:
+
+ices_get_next
+-------------
+This method is the only required method. It is called by ices at
+startup or when it has finished playing the previous file. It should
+return the path to a track. Returning an empty string will signal
+ices to shut down.
+
+ices_init
+---------
+If this method is defined, it will be called before any other
+method in your script. A return value other than 1 indicates
+that your script has failed to initialize and ices should
+terminate.
+
+ices_shutdown
+-------------
+If this method is defined, it will be called before ices
+exits.
+
+ices_get_metadata
+-----------------
+If this method is defined, it will be called after ices_get_next
+and the result will be used as the current track title on
+the icecast server.
+
+ices_get_lineno
+---------------
+If this method is defined, it will be called after ices_get_next
+and the result will be used for the line number field of the cue
+file. You probably won't be interested in this method.

@@ -1,0 +1,135 @@
+0.4.6   2019-07-30, moonbase
+        * Now works with both newer/older FLAC APIs
+        * Fixed MP4/AAC support to work with libmp4v2
+        * Added MP4 ReplayGain support (reads "----:com.apple.iTunes;replaygain_track_gain")
+0.4.5   2019-05-23, moonbase
+        * ReplayGain support added (replaygain_track_gain & RVA2 frames)
+        * support for M3U/M3U8 playlist files (ignore lines starting with #)
+          M3U/M3U8 files should be saved WITHOUT a BOM
+        * Stream metadata now always UTF-8 (standard in FLAC and OGG,
+          MP3 ID3v1+ID3v2 now transcoded, assuming ISO-8859-1 for ID3v1;
+          This allows correct Artist - Title display even for mixed
+          playlists.)
+          Note: Newer Icecast servers assume ISO-8859-1 for MP3 mounts,
+          so you might need <charset>UTF8</charset> as a mount param
+          in your icecast.xml!
+0.4.4   2019-04-11, moonbase
+        * adapt to new FLAC API (now works with libflac 1.3.0 instead
+          of requiring the older 1.1.2 to compile)
+        * fixed FLAC/OGG artist and title bug (corrupted stream title
+          when tags like "artistsort" and/or "titlesort" present).
+0.4.3   2013-08-16, sblinch
+        * fixed child reaping issue that caused huge numbers of zombies when
+          using script-based playlists
+        * removed cue file for reduced disk I/O
+0.4.2	2012-06-24, sblinch
+	* added MinCrossfade setting to specify a minimum track length for
+	  which to enable the crossfader
+	* added CrossMix option to crossmix tracks at 100% volume (instead
+	  of fading) by Daniel Pettersson and Rolf Johansson
+	* script pm: now supports accepting playback time limits from scripts
+	* script pm: relative script paths are now treated as relative to the
+	  ices binary path rather than an arbitrary compile-time module path
+	* script pm: non-filename output from scripts is now better handled
+	* added ices_log_error_output() to write error messages directly to the
+	  logfile when possible rather than just storing them
+	* added typecasting to correct dozens of compiler warnings
+	* fixed double-free in script pm during empty-filename scenarios
+0.4.1	2007-08-12
+	* support for Unicode id3v2 tags (aka the infamous "garbage in
+	  song titles" bug) - sblinch
+	* script module ported from ices 2 by Ville Koskinen.
+0.4     2004-08-28
+	* FLAC transcoding support.
+	* MP4 transcoding support added via libfaad.
+	* Crossfader added.
+	* Tested with LAME 3.96.1
+0.3     2003-07-13
+	* Updated to libshout2, which brings icecast2 compatibility.
+	* ices will now attempt to trim junk and short frames from MP3 files,
+	  which should help if you've been hearing chirps between songs.
+	* Reencoding is much more reliable - VBR, sampling rate changes, and
+	  a wide variety of bitrates have been tested.
+	* Stability stability stability.
+	* Ogg reencoding works on bigendian (eg PowerPC) systems now.
+	* Mono reencoding bug fixed.
+	* ID3v2 tag support.
+	* A blank line in a playlist will terminate ices.
+	* -i (icy_compat) has been removed in favor of -t 'protocol'
+0.2.3	2002-05-01
+	As always, the longer the time between releases, the less changed:
+	* ices no longer uses threads, making it much leaner and more portable.
+	* bundled with libshout 1.0.9, which makes it much less likely to
+	  segfault on normal MP3 files.
+	* Will now attempt to reload playlist modules when sighup'd. Make your
+	  scripting changes without interrupting your stream.
+	* Still includes a number of bugs (see BUGS)
+0.2.2	2001-08-01
+	* You can now specify the host and port for each mount point
+	  separately. In fact, you have to.
+	* MP3 encoding output buffer size increased, seems to handle VBRs
+	  better, don't know why this is necessary at the moment.
+	* Thread stack size increased again.
+	* Write to stdout directly for usage/-V info, so it doesn't get
+	  swallowed if ices is configured to run in the background.
+	* Include system configuration info in ices -V output.
+	* Use setsid() to detach from tty, not setpgid().
+	* Load perl module as a proper module. This means you'd better return
+	  1 at the end of your module.
+	* Set PYTHONPATH reliably (not using an automatic variable), and
+	  removed the arbitrary length limit.
+	* Log file no longer appends PID. In general I think this is a silly
+	  practice. I would have removed it from the cue file too, but a)
+	  I don't use the cue file, and b) it at least cleans up after itself
+	  on exit.
+	* Build dependency bugs fixed.
+0.2.1	2001-07-12
+	* Thread stack size increased, to prevent segfaults during metadata
+	  updates on Solaris, FreeBSD, OpenBSD, and probably anything that
+	  isn't Linux.
+	* Sleep code fixed to work better on other platforms. Solaris users
+	  should be happy.
+	* All playlist functions but ices_get_next made optional.
+	* Compatibility code uses old ices_(perl|python)_... function names
+	  if new, documented (man 1 ices) functions aren't found.
+0.2	2001-06-29
+	* This is a development release. It is not guaranteed to be as stable
+	  as 0.1.
+	* Multiple streams are supported. Add multiple stream sections to
+	  ices.conf or use multiple -m options on the command line. See the
+	  man page for details.
+	* Oh yeah, there's a man page.
+	* ices can decode ogg vorbis files and reencode them as MP3
+	* New ices_get_metadata function added for playlist scripts.
+	* Better recovery from transient network problems.
+	* SIGUSR1 causes ices to jump to the next track
+0.1.0	2001-06-15
+	* Reencoder updated to new LAME API of 3.88.
+	* new option --with-xmlconfig when building to locate xml libraries
+	* configure looks for python 2
+	* new commandline option -V for version/feature info
+	* cue file song length field now correct
+	* BaseDirectory configuration option works
+	* support for using an installed libshout
+	* fixes to metadata update (first song metadata now set)
+0.0.1b5	2000-08-29
+	* Perl module now supports dynamic loading of modules (e.g "use Socket")
+	* Ices now exits after 10 consecutive filename or other errors. (Removes spamming problems)
+0.0.1b4	2000-08-24
+	* New options to change sample rate and number of channels
+	  when reencoding.
+0.0.1b3	2000-08-08
+	* Reencoding fixes, commented config file and README.playlist
+	* Changed perl module to use user specified module
+	* ices.py and ices.pm now commented
+	* Configure.in now checks for gmake, and tells user to use this
+	  if found.
+	* ices.pm,ices.py and README.playlist included in dist.
+	* Moved README to README.old and lynx -dump -nolist on
+	  doc/icesmanual.html to the new README. (I don't want to
+	  maintain two sets of documentation)
+	* Started to work on the FAQ
+0.0.1b2	2000-08-02
+	* Code cleanup, lots of code comments added
+0.0.1b1	2000-07-19
+	* first release
