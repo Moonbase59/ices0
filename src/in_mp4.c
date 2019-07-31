@@ -202,6 +202,24 @@ static void ices_mp4_read_metadata(MP4FileHandle mp4file) {
 		MP4ItmfItemListFree(list);
 	}
 
+	list = MP4ItmfGetItemsByMeaning(mp4file, "com.apple.iTunes", "REPLAYGAIN_TRACK_GAIN");
+	if (list) {
+		int i;
+		for (i = 0; i < list->size; i++) {
+			MP4ItmfItem* item = &list->elements[i];
+			if (item->dataList.size < 1)
+				continue;
+			if (item->dataList.size > 1)
+				ices_log_debug("ignore multiple values for tag %s\n", item->name);
+			else {
+				MP4ItmfData* data = &item->dataList.elements[0];
+				char *val = strndup((const char *) data->value, data->valueSize);
+				rg_set_track_gain(atof(val));
+			}
+		}
+		MP4ItmfItemListFree(list);
+	}
+
 	return;
 }
 
