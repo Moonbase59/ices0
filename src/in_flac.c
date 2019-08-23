@@ -81,6 +81,10 @@ ices_flac_open (input_stream_t* self, char* buf, size_t len)
                 return -1;
         }
 
+        // _set_… calls must come BEFORE the decoder init!
+        FLAC__stream_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_VORBIS_COMMENT);
+
+
 #if !defined(FLAC_API_VERSION_CURRENT) || FLAC_API_VERSION_CURRENT <= 7
         FLAC__stream_decoder_set_read_callback(decoder, flac_read_cb);
         FLAC__stream_decoder_set_write_callback(decoder, flac_write_cb);
@@ -107,8 +111,6 @@ ices_flac_open (input_stream_t* self, char* buf, size_t len)
                 goto errDecoder;
         }
 #endif /* !FLAC_API_VERSION_CURRENT || FLAC_API_VERSION_CURRENT <= 7 */
-
-        FLAC__stream_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
         if (!(flac_data = (flac_in_t*)malloc (sizeof (flac_in_t)))) {
                 ices_log_error ("Malloc failed in ices_flac_open");
