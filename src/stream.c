@@ -1,6 +1,6 @@
 /* stream.c
  * - Functions for streaming in ices
- * Copyright (c) 2000 Alexander Haväng
+ * Copyright (c) 2000 Alexander Havï¿½ng
  * Copyright (c) 2001-4 Brendan Cully <brendan@xiph.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,11 @@
 #    include <time.h>
 #  endif
 #endif
+
+/* needed for directory checking */
+#include <sys/types.h>
+#include <sys/stat.h>
+
 
 #define INPUT_BUFSIZ 4096
 #define OUTPUT_BUFSIZ 32768
@@ -111,7 +116,7 @@ void ices_stream_loop(ices_config_t* config) {
 			now = time(NULL);
 			source.interrupttime = (time_t) ( (int) now + timelimit );
 		}
-		
+
 		if (!source.read)
 			for (stream = config->streams; stream; stream = stream->next)
 				if (!stream->reencode) {
@@ -359,6 +364,13 @@ static int stream_open_source(input_stream_t* source) {
 		ices_util_strerror(errno, buf, sizeof(buf));
 		ices_log_error("Error opening: %s", buf);
 
+		return -1;
+	}
+
+	/* check if it is a regular file and not a directory, device or something else */
+	if ((fd > 0) && (ices_util_is_regular_file(fd) != 1)) {
+		/* error already logged */
+		close(fd);
 		return -1;
 	}
 
