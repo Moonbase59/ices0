@@ -7,7 +7,7 @@ and has been carefully enhanced to be compatible with _CentovaCast_, _Airtime_, 
 
 ## New features (over v0.4)
 
-This **version 0.4.7** features the following enhancements:
+This **version 0.4.8** features the following enhancements:
 
 * Script module for easy shell scripting (i.e., for kPlaylist).
 * Support for MP3 Unicode id3v2 tags (aka the infamous "garbage in
@@ -32,6 +32,7 @@ This **version 0.4.7** features the following enhancements:
   * Ogg Vorbis: reads `REPLAYGAIN_TRACK_GAIN` VorbisComment, case-insensitive.
   * MP4: reads `----:com.apple.iTunes;replaygain_track_gain`.
 * Fixed MP4/AAC support to work with libmp4v2.
+* Check for playing regular files (in case a device or directory was accidentally specified).
 
 ## Dependencies
 
