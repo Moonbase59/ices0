@@ -29,7 +29,7 @@ This **version 0.4.9** features the following enhancements:
     _Note:_ TXXX frames "win" over RVA2, this is intended.
   * FLAC: reads `REPLAYGAIN_TRACK_GAIN` VorbisComment, case-insensitive.
   * Ogg Vorbis: reads `REPLAYGAIN_TRACK_GAIN` VorbisComment, case-insensitive.
-  * MP4: reads `----:com.apple.iTunes;replaygain_track_gain`.
+  * MP4: reads `----:com.apple.iTunes;replaygain_track_gain`, case-insensitive.
 * Fixed MP4/AAC support to work with libmp4v2.
 * Check for playing regular files (in case a device or directory was accidentally specified).
 * Cue file writing is disabled per default but can be enabled using `-Q` on the
