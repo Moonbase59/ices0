@@ -1,10 +1,10 @@
-.TH "ices" "1" "July 2004" "ices 0.4.5" "Icecast media streaming system"
+.TH "ices" "1" "July 2004" "ices 0.4.8" "Icecast media streaming system"
 .SH NAME
 ices \- stream MP3 audio to an icecast server
 
 .SH SYNOPSIS
 .B ices
-.RB [\| \-BVv \|]
+.RB [\| \-BVvQ \|]
 .\" Configuration path
 .RB [\| \-c
 .IR configfile \|]
@@ -102,6 +102,9 @@ Show version information and compile-time options and exit.
 .TP
 .B \-v
 Run in verbose mode.
+.TP
+.B \-Q
+Write a cue file.
 
 .SS "Playlist options"
 .TP
@@ -303,6 +306,6 @@ Default path to the python playlist module.
 Default path to the perl playlist module.
 
 .SH AUTHORS
-ices was originally written by Alexander Haväng <eel@icecast.org>.
+ices was originally written by Alexander Havï¿½ng <eel@icecast.org>.
 .P
 It is currently developed by Brendan Cully <brendan@icecast.org>.

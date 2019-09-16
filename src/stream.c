@@ -319,7 +319,7 @@ static int stream_send(ices_config_t* config, input_stream_t* source) {
 				}
 			}
 		}
-//		ices_cue_update(source);
+		ices_cue_update(source);
 		if ( source->interrupttime && time(NULL)>=source->interrupttime ) finish_send = 1;
 	}
 

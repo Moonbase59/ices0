@@ -1,6 +1,6 @@
 /* setup.c
  * - Functions for initialization in ices
- * Copyright (c) 2000 Alexander Haväng
+ * Copyright (c) 2000 Alexander Havï¿½ng
  * Copyright (c) 2002-4 Brendan Cully <brendan@xiph.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -162,7 +162,8 @@ static void ices_setup_parse_defaults(ices_config_t *ices_config) {
 	ices_config->daemon = ICES_DEFAULT_DAEMON;
 	ices_config->base_directory = ices_util_strdup(ICES_DEFAULT_BASE_DIRECTORY);
 	ices_config->verbose = ICES_DEFAULT_VERBOSE;
-	ices_config->reencode = 0;
+	ices_config->reencode = ICES_DEFAULT_REENCODE;
+	ices_config->cuefile = ICES_DEFAULT_CUEFILE;
 
 	ices_config->pm.playlist_file =
 		ices_util_strdup(ICES_DEFAULT_PLAYLIST_FILE);
@@ -310,7 +311,7 @@ static void ices_setup_parse_command_line(ices_config_t *ices_config, char **arg
 		s = argv[arg];
 
 		if (s[0] == '-') {
-			if ((strchr("BRrsVv", s[1]) == NULL) && arg >= (argc - 1)) {
+			if ((strchr("BRrsVvQ", s[1]) == NULL) && arg >= (argc - 1)) {
 				fprintf(stderr, "Option %c requires an argument!\n", s[1]);
 				ices_setup_usage();
 				ices_setup_shutdown();
@@ -401,6 +402,9 @@ static void ices_setup_parse_command_line(ices_config_t *ices_config, char **arg
 			case 'p':
 				arg++;
 				stream->port = atoi(argv[arg]);
+				break;
+			case 'Q':
+				ices_config->cuefile = 1;
 				break;
 			case 'R':
 #ifdef HAVE_LIBLAME
@@ -536,6 +540,7 @@ static void ices_setup_usage(void) {
 	printf("\t-n <stream name>\n");
 	printf("\t-p <port>\n");
 	printf("\t-P <password>\n");
+	printf("\t-Q (activate cue file)\n");
 	printf("\t-R (activate reencoding)\n");
 	printf("\t-r (randomize playlist)\n");
 	printf("\t-s (private stream)\n");

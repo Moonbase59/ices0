@@ -230,6 +230,8 @@ static void parse_execution_node(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,
 			ices_config->daemon = atoi(ices_xml_read_node(doc, cur));
 		else if (xmlstrcmp(cur->name, "Verbose") == 0)
 			ices_config->verbose = atoi(ices_xml_read_node(doc, cur));
+		else if (xmlstrcmp(cur->name, "CueFile") == 0)
+			ices_config->cuefile = atoi(ices_xml_read_node(doc, cur));
 		else if (xmlstrcmp(cur->name, "BaseDirectory") == 0) {
 			if (ices_config->base_directory)
 				ices_config->base_directory =

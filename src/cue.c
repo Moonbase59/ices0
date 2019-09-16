@@ -1,6 +1,6 @@
 /* cue.c
  * - Functions for cue file in ices
- * Copyright (c) 2000 Alexander Haväng
+ * Copyright (c) 2000 Alexander Havï¿½ng
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,27 +41,29 @@ static int ices_cue_lineno = 0;
 
 /* Update the cue file with a set of variables */
 void ices_cue_update(input_stream_t* source) {
-	char buf[1024];
-	char artist[1024];
-	char title[1024];
-	FILE *fp = ices_util_fopen_for_writing(ices_cue_get_filename());
+	if (ices_config.cuefile) {
+		char buf[1024];
+		char artist[1024];
+		char title[1024];
+		FILE *fp = ices_util_fopen_for_writing(ices_cue_get_filename());
 
-	if (!fp) {
-		ices_log("Could not open cuefile [%s] for writing, cuefile not updated!", ices_cue_get_filename());
-		return;
+		if (!fp) {
+			ices_log("Could not open cuefile [%s] for writing, cuefile not updated!", ices_cue_get_filename());
+			return;
+		}
+
+		artist[0] = '\0';
+		title[0] = '\0';
+		ices_metadata_get(artist, sizeof(artist), title, sizeof(title));
+
+		fprintf(fp, "%s\n%d\n%d\n%s\n%f\n%d\n%s\n%s\n", source->path,
+			(int) source->filesize, source->bitrate,
+			ices_util_file_time(source->bitrate, source->filesize, buf),
+			ices_util_percent(source->bytes_read, source->filesize),
+			ices_cue_lineno, artist, title);
+
+		ices_util_fclose(fp);
 	}
-
-	artist[0] = '\0';
-	title[0] = '\0';
-	ices_metadata_get(artist, sizeof(artist), title, sizeof(title));
-
-	fprintf(fp, "%s\n%d\n%d\n%s\n%f\n%d\n%s\n%s\n", source->path,
-		(int) source->filesize, source->bitrate,
-		ices_util_file_time(source->bitrate, source->filesize, buf),
-		ices_util_percent(source->bytes_read, source->filesize),
-		ices_cue_lineno, artist, title);
-
-	ices_util_fclose(fp);
 }
 
 /* Cleanup the cue module by removing the cue file */

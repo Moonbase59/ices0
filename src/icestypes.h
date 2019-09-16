@@ -1,6 +1,6 @@
 /* icestypes.h
  * - Datatypes for ices
- * Copyright (c) 2000 Alexander Haväng
+ * Copyright (c) 2000 Alexander Havï¿½ng
  * Copyright (c) 2001-4 Brendan Cully <brendan@xiph.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -123,6 +123,7 @@ typedef struct {
 	int daemon;
 	int verbose;
 	int reencode;
+	int cuefile;
 	char *configfile;
 	char *base_directory;
 	FILE *logfile;

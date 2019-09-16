@@ -1,3 +1,9 @@
+0.4.9   2019-09-16, moonbase
+        * Re-introduce cue file writing upon request: '-Q' on commandline,
+          <CueFile>1</CueFile> in ices.conf, Execution section.
+0.4.8   2019-09-15, moonbase
+        * Fix segfault/hang when directory or device was given as file path
+          (instead of a regular playable file)
 0.4.7   2019-08-23, moonbase
         * Fixed no FLAC metadata read bug if FLAC API 8+ was used. Closes #1.
 0.4.6   2019-07-30, moonbase

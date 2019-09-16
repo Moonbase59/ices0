@@ -133,5 +133,6 @@ double rg_get_track_gain(void);
 #define ICES_DEFAULT_PLAYLIST_TYPE ices_playlist_builtin_e;
 #define ICES_DEFAULT_VERBOSE 0
 #define ICES_DEFAULT_REENCODE 0
+#define ICES_DEFAULT_CUEFILE 0
 
 #endif

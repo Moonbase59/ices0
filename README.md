@@ -7,7 +7,7 @@ and has been carefully enhanced to be compatible with _CentovaCast_, _Airtime_, 
 
 ## New features (over v0.4)
 
-This **version 0.4.8** features the following enhancements:
+This **version 0.4.9** features the following enhancements:
 
 * Script module for easy shell scripting (i.e., for kPlaylist).
 * Support for MP3 Unicode id3v2 tags (aka the infamous "garbage in
@@ -20,7 +20,6 @@ This **version 0.4.8** features the following enhancements:
   of fading) by Daniel Pettersson and Rolf Johansson.
 * MinCrossfade setting to specify a minimum track length for
   which to enable the crossfader (for jingles etc.).
-* Disabled cue file generation for reduced disk I/O.
 * Works with new and old FLAC APIs (now works with libflac 1.3.2/1.3.0 instead
   of requiring the older 1.1.2 to compile).
 * Support for M3U/M3U8 playlist files (ignore lines starting with #).  
@@ -33,6 +32,10 @@ This **version 0.4.8** features the following enhancements:
   * MP4: reads `----:com.apple.iTunes;replaygain_track_gain`.
 * Fixed MP4/AAC support to work with libmp4v2.
 * Check for playing regular files (in case a device or directory was accidentally specified).
+* Cue file writing is disabled per default but can be enabled using `-Q` on the
+  commandline or using `<CueFile>1</CueFile>` in `ices.conf`, `Execution` section.
+  _Note:_ This can wear out discs and especially SD cards real quick, use with
+  care (or in a RAM disc).
 
 ## Dependencies
 

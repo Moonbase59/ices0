@@ -344,6 +344,7 @@
                 <li>-n &lt;stream name&gt;</li>
                 <li>-p &lt;port&gt;</li>
                 <li>-P &lt;password&gt;</li>
+                <li>-Q (activate cue file)</li>
                 <li>-r (randomize playlist)</li>
                 <li>-s (private stream)</li>
                 <li>-S &lt;script|perl|python|builtin&gt;</li>
@@ -398,6 +399,7 @@
           &lt;Background&gt;0&lt;/Background&gt;
           &lt;Verbose&gt;0&lt;/Verbose&gt;
           &lt;BaseDirectory&gt;/tmp&lt;/BaseDirectory&gt;
+          &lt;CueFile&gt;0&lt;/CueFile&gt;
         &lt;/Execution&gt;
 
         &lt;Stream&gt;
@@ -489,6 +491,15 @@
                   and temporary playlist files.
                   You need write permissions in this directory. The
                   default is /tmp
+                </li>
+
+                <li> Execution CueFile <br>
+                  Command line option: -Q <br>
+                  Config file tag: Execution/CueFile <br>
+                  Ices can output details of what’s currently playing
+                  into a file named 'ices.cue' that can be read by
+                  external tools. This feature is normally disabled,
+                  in order not to wear out discs or SD cards.
                 </li>
 
                 <li> Stream Mountpoint <br>

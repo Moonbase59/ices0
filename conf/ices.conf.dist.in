@@ -36,6 +36,8 @@
 	 and pid file (if daemonizing). Don't use /tmp if you have l33t h4x0rz
          on your server. -->
     <BaseDirectory>/tmp</BaseDirectory>
+    <!-- Set this to 1 if you want ices to write a cue file -->
+    <CueFile>0</CueFile>
   </Execution>
 
   <!-- Multiple streams are possible, just add more <Stream></Stream> sections -->
