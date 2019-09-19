@@ -40,6 +40,17 @@ This **version 0.4.10** features the following enhancements:
   the commandline or `<Username>user</Username>` in `ices.conf`, `Stream/Server`
   section.
 
+## What ices0 _cannot_ do (and probably never will)
+
+* Accept anything other than _MP3_, _Ogg Vorbis_, _FLAC_ and _MP4/M4A AAC_ files for input.
+* Stream anything else than an MP3 stream to a server. Ogg, FLAC and AAC are transcoded to MP3; this is why _enabling Reencode is a good idea_. Ices needs `liblame` for that.
+* Play broken MP3 files correctly (there are _many_). You might try [MP3 Diags](http://mp3diags.sourceforge.net/) to repair.
+* Apply ReplayGain if reencoding isn’t enabled. (Enabling reencoding is generally
+  a good idea.)
+* Use `https` for streaming to an Icecast/Shoutcast server. Most stream providers don’t offer this anyway, and it doesn’t mean the server’s _web pages_ can’t use `https`.
+
+That said, ices0 is still a rock-solid tool and often used as an "Auto DJ", even in large systems like _Airtime_, _CentovaCast_, _AzuraCast_ and many others. I have seen it running on servers over _months_ without a single glitch.
+
 ## Dependencies
 
 * libxml2
