@@ -350,6 +350,7 @@
                 <li>-S &lt;script|perl|python|builtin&gt;</li>
                 <li>-t &lt;http|xaudiocast|icy&gt;</li>
                 <li>-u &lt;stream url&gt;</li>
+                <li>-U &lt;user&gt;</li>
                 <li>-v (verbose, show debug info in log)</li>
                 <li>-V (Version)</li>
                 <li>-R (Re-encode, needs liblame; also enables
@@ -406,6 +407,7 @@
           &lt;Server&gt;
             &lt;Hostname&gt;localhost&lt;/Hostname&gt;
             &lt;Port&gt;8000&lt;/Port&gt;
+            &lt;Username&gt;source&lt;/Username&gt;
             &lt;Password&gt;letmein&lt;/Password&gt;
             &lt;Protocol&gt;http&lt;/Protocol&gt;
           &lt;/Server&gt;
@@ -450,6 +452,17 @@
                   Config file tag: Server/Port<br>
                   This is the port the server is listening on, by
                   default 8000.
+                </li>
+
+                <li> Server Username <br>
+                  Command line option: -U &lt;user&gt; <br>
+                  Config file tag: Server/Username <br>
+                  The encoder user name for the server. If this is not
+                  correct,
+                  then ices cannot log in on the server, and ices
+                  will exit.
+                  If nothing is specified, the default user name
+                  "source" will be used.
                 </li>
 
                 <li> Server Password <br>

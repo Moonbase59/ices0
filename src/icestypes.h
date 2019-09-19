@@ -43,6 +43,7 @@ typedef struct ices_stream_St {
 
 	char *host;
 	int port;
+	char *user;
 	char *password;
 	protocol_t protocol;
 

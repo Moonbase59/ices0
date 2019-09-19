@@ -7,7 +7,7 @@ and has been carefully enhanced to be compatible with _CentovaCast_, _Airtime_, 
 
 ## New features (over v0.4)
 
-This **version 0.4.9** features the following enhancements:
+This **version 0.4.10** features the following enhancements:
 
 * Script module for easy shell scripting (i.e., for kPlaylist).
 * Support for MP3 Unicode id3v2 tags (aka the infamous "garbage in
@@ -36,6 +36,9 @@ This **version 0.4.9** features the following enhancements:
   commandline or using `<CueFile>1</CueFile>` in `ices.conf`, `Execution` section.
   _Note:_ This can wear out discs and especially SD cards real quick, use with
   care (or in a RAM disc).
+* Allow username different from "source" for stream connections: `-U user` on
+  the commandline or `<Username>user</Username>` in `ices.conf`, `Stream/Server`
+  section.
 
 ## Dependencies
 

@@ -202,6 +202,9 @@ static void parse_server_node(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,
 		else if (xmlstrcmp(cur->name, "Hostname") == 0) {
 			ices_util_free(ices_config->host);
 			ices_config->host = ices_util_strdup(ices_xml_read_node(doc, cur));
+		} else if (xmlstrcmp(cur->name, "Username") == 0) {
+			ices_util_free(ices_config->user);
+			ices_config->user = ices_util_strdup(ices_xml_read_node(doc, cur));
 		} else if (xmlstrcmp(cur->name, "Password") == 0) {
 			ices_util_free(ices_config->password);
 			ices_config->password = ices_util_strdup(ices_xml_read_node(doc, cur));

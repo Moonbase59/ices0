@@ -47,7 +47,10 @@
       <Hostname>localhost</Hostname>
       <!-- Port of the same -->
       <Port>8000</Port>
-      <!-- The username on the Icecast/Shoutcast server is always "source" -->
+      <!-- The default username on the Icecast/Shoutcast server is "source" -->
+      <!-- Set this if you need another user name
+      <Username>source</Username>
+      -->
       <!-- Encoder password on the icecast server -->
       <Password>letmein</Password>
       <!-- Header protocol to use when communicating with the server.
