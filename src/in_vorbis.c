@@ -226,9 +226,9 @@ static void in_vorbis_set_metadata(ices_vorbis_in_t* vorbis_data) {
 	for (i = 0; i < comment->comments; i++) {
 		key = comment->user_comments[i];
 		ices_log_debug("Vorbis comment found: %s", key);
-		if (!strncasecmp("artist", key, 6))
+		if (!strncasecmp("artist=", key, 7))
 			artist = key + 7;
-		else if (!strncasecmp("title", key, 5))
+		else if (!strncasecmp("title=", key, 6))
 			title = key + 6;
 		else if (!strncasecmp("replaygain_track_gain", key, 21))
 			rg_set_track_gain(atof(key + 22));
