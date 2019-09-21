@@ -39,6 +39,7 @@ This **version 0.4.10** features the following enhancements:
 * Allow username different from "source" for stream connections: `-U user` on
   the commandline or `<Username>user</Username>` in `ices.conf`, `Stream/Server`
   section.
+* Can be installed using _Homebrew_, for instance on a MacOS X system.
 
 ## What ices0 _cannot_ do (and probably never will)
 
@@ -77,6 +78,22 @@ sudo apt-get install libpython-dev libperl-dev
 ```
 
 ## Building
+
+### Building with Homebrew (MacOS X)
+
+Open a terminal and simply enter:
+
+```bash
+brew install Moonbase59/tap/ices0
+```
+
+When installing with Homebrew, ices0 pulls in the latest versions of _Python2_ and _Perl_ automatically, so the scripting bindings can be used. If you do not wish to install yet another Python and/or Perl version, you can disable this feature like so:
+
+```bash
+brew install --without-python2 --without-perl Moonbase59/tap/ices0
+```
+
+### Building manually
 
 You need git and a working automake build environment.
 
