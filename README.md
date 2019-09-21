@@ -87,10 +87,10 @@ Open a terminal and simply enter:
 brew install Moonbase59/tap/ices0
 ```
 
-When installing with Homebrew, ices0 pulls in the latest versions of _Python2_ and _Perl_ automatically, so the scripting bindings can be used. If you do not wish to install yet another Python and/or Perl version, you can disable this feature like so:
+If you don’t have current versions of _Python2_ and/or _Perl_ on your system and wish to use ices0’s _scripting features_, you can pull the latest versions in using a command like:
 
 ```bash
-brew install --without-python2 --without-perl Moonbase59/tap/ices0
+brew install --with-python2 --with-perl Moonbase59/tap/ices0
 ```
 
 ### Building manually
