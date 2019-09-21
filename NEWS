@@ -1,3 +1,6 @@
+0.4.11  2019-09-21, moonbase
+        * Correct stream metadata in case an Ogg Vorbis file contains tags
+          like "ARTISTS", "ARTISTSORT", "TITLESORT" or the like.
 0.4.10  2019-09-19, moonbase
         * Allow specifying a username different from "source": '-U user' on
           commandline, <Username>user</Username> in ices.conf,
