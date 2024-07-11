@@ -1,6 +1,6 @@
 /* playlist_python.c
  * - Interpreter functions for python
- * Copyright (c) 2000 Alexander Hav‰ng
+ * Copyright (c) 2000 Alexander Hav√§ng
  * Copyright (c) 2001-3 Brendan Cully
  *
  * This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ static char *playlist_python_get_next(void) {
 	PyObject* res;
 	char* rc = NULL;
 
-	if ((res = python_eval(pl_get_next_hook)) && PyString_Check(res))
+	if ((res = python_eval(pl_get_next_hook)) && PyObject_TypeCheck(res, &PyBaseString_Type))
 		rc = ices_util_strdup(PyString_AsString(res));
 	else
 		ices_log_error("ices_get_next failed");
@@ -112,7 +112,7 @@ static char*playlist_python_get_metadata(void) {
 	char* rc = NULL;
 
 	if (pl_get_metadata_hook) {
-		if ((res = python_eval(pl_get_metadata_hook)) && PyString_Check(res))
+		if ((res = python_eval(pl_get_metadata_hook)) && PyObject_TypeCheck(res, &PyBaseString_Type))
 			rc = ices_util_strdup(PyString_AsString(res));
 		else
 			ices_log_error("ices_get_metadata failed");
